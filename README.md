@@ -8,7 +8,7 @@ Multivariate PBC4cip is a machine learning classifier package based on multivari
 * [tqdm](https://tqdm.github.io/) - Progress bar helper
 
 ## More Information
-This project expands on the Python code of PBC4cip, [available here](https://github.com/octavioloyola/PBC4cip)
+This project expands on the Python code of PBC4cip, [available here](https://github.com/octavioloyola/PBC4cip).
 
 Information regarding Multivariate PBC4cip can be found in:
 
