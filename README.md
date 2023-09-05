@@ -1,5 +1,5 @@
-# PBC4cip
-PBC4cip is a machine learning classifier package based on contrast patterns used to handle class imbalance problems.
+# Multivariate PBC4cip
+Multivariate PBC4cip is a machine learning classifier package based on multivariate contrast patterns used to handle class imbalance problems. 
 
 ## Built With
 
@@ -7,15 +7,13 @@ PBC4cip is a machine learning classifier package based on contrast patterns used
 * [Numpy](https://numpy.org) - Array computation package
 * [tqdm](https://tqdm.github.io/) - Progress bar helper
 
-## Getting Started
-* You can install PBC4cip as a python package with pip by using [pip install PBC4cip](https://pypi.org/project/PBC4cip/).
-* An example of how to run PBC4cip with csv training and testing files can be found in [PBC4cip/example.py](https://github.com/octavioloyola/PBC4cip/blob/master/PBC4cip/example/example.py)
-* This example file can be ran from the PBC4cip directory where you cloned this repository with python -m example.example 
-
-
 ## More Information
-This project expands on the code originally made by José René White Enciso, [available here](https://github.com/jrenewhite/PBC4cip)
+This project expands on the Python code of PBC4cip, [available here](https://github.com/octavioloyola/PBC4cip)
 
-Additional information regarding PBC4cip can be found in its original article:
+Information regarding Multivariate PBC4cip can be found in:
+
+Cañete-Sifuentes, L., Monroy, R., Medina-Pérez, M. A., Loyola-González, O., & Voronisky, F. V. (2019). "[Classification based on multivariate contrast patterns](https://doi.org/10.1109/ACCESS.2019.2913649)" *IEEE Access, 7*, 55744-55762.
+
+Information regarding PBC4cip can be found in:
 
 Loyola-González, O., Medina-Pérez, M. A., Martínez-Trinidad, J. F., Carrasco-Ochoa, J. A., Monroy, R., & García-Borroto, M. (2017). "[PBC4cip: A new contrast pattern-based classifier for class imbalance problems.](https://doi.org/10.1016/j.knosys.2016.10.018)" *Knowledge-Based Systems, 115*, 100-109.
