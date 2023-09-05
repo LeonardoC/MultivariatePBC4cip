@@ -8,6 +8,14 @@ class DecisionTree():
         self.__TreeRootNode = None
     
     @property
+    def TreeRootNode(self):
+        return self.__TreeRootNode
+    
+    @TreeRootNode.setter
+    def TreeRootNode(self, root):
+        self.__TreeRootNode = root
+
+    @property
     def Model(self):
         return self.__Model
 
@@ -60,25 +68,36 @@ class DecisionTreeNode():
     @Children.setter
     def Children(self, new_children):
         self.__Children = new_children
+    
+    @property
+    def ChildSelector(self):
+        return self.__ChildSelector
+    @ChildSelector.setter
+    def ChildSelector(self, new_selector):
+        self.__ChildSelector = new_selector
 
     @property
     def IsLeaf(self):
         return (not self.Children or len(self.Children) == 0)
 
-    def __format__(self, ident):
-        result = self.__repr__()
 
+    def __repr__(self):
+        return f"[{', '.join(map(str, self.Data))}]\n" + self.format_tree(0)
+        # if not self.ChildSelector:
+        #     return f"[{', '.join(map(str, self.Data))}]"
+        # else:
+        #     return f"[{', '.join(map(str, self.Data))}] - {self.ChildSelector}"
+
+    def format_tree(self, ident):
+        res = ""
         if not self.IsLeaf:
             for child in range(len(self.Children)):
                 if self.Children[child].Data:
                     childSelector = self.ChildSelector
                     curChild = self.Children[child]
-                    result = f"{result}\n{' '*((ident+1)*3)}- {childSelector.__format__(child)} {curChild.__format__(ident+1)}"
-
-        return result
-
-    def __repr__(self):
-        if not self.ChildSelector:
-            return f"[{', '.join(map(str, self.Data))}]"
-        else:
-            return f"[{', '.join(map(str, self.Data))}] - {self.ChildSelector}"
+                    res += "\n"
+                    res += (" ") * ((ident + 1) * 3)
+                    res += "- "
+                    res += childSelector.__format__(child) + f" [{', '.join(map(str, curChild.Data))}]"
+                    res += curChild.format_tree(ident + 1)
+        return res

@@ -45,7 +45,7 @@ def test_PBC4cip(trainFile, testFile):
     train, test = import_data(trainFile, testFile)
     X_train, y_train, X_test, y_test = split_data(train, test)
     
-    classifier = PBC4cip()
+    classifier = PBC4cip(multivariate=True)
     patterns = classifier.fit(X_train, y_train)
 
     y_test_scores = classifier.score_samples(X_test)

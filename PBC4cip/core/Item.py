@@ -244,8 +244,7 @@ class MultivariateLessOrEqualThanItem(MultivariateSingleValueItem):
                 return SubsetRelation.Unrelated
 
             try:
-                proportion = list(other.Weights.values())[
-                    0] / list(self.Weights.values())[0]
+                proportion = list(other.Weights.values())[0] / list(self.Weights.values())[0]
                 for feature in list(self.Weights.keys()):
                     if abs(self.Weights[feature]*proportion - other.Weights[feature]) > self._parallel:
                         return SubsetRelation.Unrelated
@@ -275,7 +274,7 @@ class MultivariateGreatherThanItem(MultivariateSingleValueItem):
             instance, self.Features, self.Weights)
         if math.isnan(instanceValue):
             return False
-        return instanceValue <= self.Value
+        return instanceValue > self.Value
 
     def CompareTo(self, other):
         if isinstance(other, MultivariateGreatherThanItem):
@@ -285,8 +284,7 @@ class MultivariateGreatherThanItem(MultivariateSingleValueItem):
                 return SubsetRelation.Unrelated
 
             try:
-                proportion = list(other.Weights.values())[
-                    0] / list(self.Weights.values())[0]
+                proportion = list(other.Weights.values())[0] / list(self.Weights.values())[0]
                 for feature in list(self.Weights.keys()):
                     if abs(self.Weights[feature]*proportion - other.Weights[feature]) > self._parallel:
                         return SubsetRelation.Unrelated
@@ -307,7 +305,7 @@ class MultivariateGreatherThanItem(MultivariateSingleValueItem):
         linearCombination = ' + '.join(
             map(lambda weight: str(self.Weights[weight]) + " * " + weight[0], self.Weights))
 
-        return f"{linearCombination} <= {self.Value}"
+        return f"{linearCombination} > {self.Value}"
 
 
 class MultivariateCutPointBasedBuilder(ItemBuilder):

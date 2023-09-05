@@ -26,6 +26,15 @@ class DecisionTreeBuilder():
         self.__OnSelectingFeaturesToConsider = None
         self.__SplitIteratorProvider = SplitIteratorProvider(self.Dataset)
     
+
+    @property 
+    def OnSelectingFeaturesToConsider(self):
+        return self.__OnSelectingFeaturesToConsider
+    
+    @OnSelectingFeaturesToConsider.setter
+    def OnSelectingFeaturesToConsider(self, new_f):
+        self.__OnSelectingFeaturesToConsider = new_f
+
     @property
     def MinimalInstanceMembership(self):
         return self.__MinimalInstanceMembership
@@ -45,6 +54,9 @@ class DecisionTreeBuilder():
     @property
     def SplitIteratorProvider(self):
         return self.__SplitIteratorProvider
+    @SplitIteratorProvider.setter
+    def SplitIteratorProvider(self, new_split_iterator):
+        self.__SplitIteratorProvider = new_split_iterator
     
     @property
     def FeatureCount(self):
@@ -194,12 +206,11 @@ class SelectorContext():
 
 class MultivariateDecisionTreeBuilder(DecisionTreeBuilder):
     def __init__(self, dataset, X, y):
-        super().__init__(dataset)
+        super().__init__(dataset, X, y)
         self.MinimalForwardGain = 0
-        self.__trainInstances = combine_instances(X, y)
+        #self.__trainInstances = combine_instances(X, y)
         self.WMin = 0  # Minimal absolute value for each weight after normalizing
-        self.SplitIteratorProvider = MultivariateSplitIteratorProvider(
-            self.Dataset)
+        self.SplitIteratorProvider = MultivariateSplitIteratorProvider(self.Dataset)
 
     def Build(self):
         if self.MinimalSplitGain <= 0:
@@ -218,11 +229,11 @@ class MultivariateDecisionTreeBuilder(DecisionTreeBuilder):
         
         parentDistribution = FindDistribution(
             filteredObjMembership, self.Dataset.Model, self.Dataset.Class)
-        print(f"ParentDist: {parentDistribution}")
+        #print(f"ParentDist: {parentDistribution}")
 
         result.TreeRootNode = DecisionTreeNode(parentDistribution)
 
-        self.__FillNode(result.TreeRootNode,
+        self.FillNode(result.TreeRootNode,
                       filteredObjMembership, 0, currentContext)
 
         return result
@@ -249,10 +260,9 @@ class MultivariateDecisionTreeBuilder(DecisionTreeBuilder):
                 raise Exception(f"Undefined iterator for feature {feature}")
             splitIterator.Initialize(instanceTuples)
             while splitIterator.FindNext():
-                currentGain = self._distributionEvaluator(node.Data, splitIterator.CurrentDistribution)
+                currentGain = self.distributionEvaluator(node.Data, splitIterator.CurrentDistribution)
                 if currentGain >= self.MinimalSplitGain:
-                    if winningSplitSelector.EvaluateThis(
-                            currentGain, splitIterator, level):
+                    if winningSplitSelector.EvaluateThis(currentGain, splitIterator):
                         bestFeature = self.Dataset.GetAttribute(feature)
 
 
@@ -280,10 +290,10 @@ class MultivariateDecisionTreeBuilder(DecisionTreeBuilder):
                         break
 
                     while splitIterator.FindNext():
-                        currentGain = self._distributionEvaluator(
+                        currentGain = self.distributionEvaluator(
                             node.Data, splitIterator.CurrentDistribution)
                         if currentGain >= self.MinimalSplitGain and (currentGain - winningSplitSelector.MinStoredValue) >= self.MinimalForwardGain:
-                            if winningSplitSelector.EvaluateThis(currentGain, splitIterator, level):
+                            if winningSplitSelector.EvaluateThis(currentGain, splitIterator):
                                 bestFeature = candidateFeature
                 if not bestFeature:
                     break
@@ -302,7 +312,7 @@ class MultivariateDecisionTreeBuilder(DecisionTreeBuilder):
                 childNode.Parent = node
                 node.Children.append(childNode)
 
-                self.__FillNode(
+                self.FillNode(
                     childNode, instancesPerChildNode[index], level + 1, currentContext)
         
 

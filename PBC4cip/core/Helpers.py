@@ -121,7 +121,7 @@ def combine_instances(X, y):
     combined_list = []
     for i,val in enumerate(X):
         combined_list.append(__chain_together(val, y[i]))
-    result = np.asarray(combined_list, dtype= np.object)
+    result = np.asarray(combined_list, dtype= object)
     return result
 
 def __chain_together(a, b):

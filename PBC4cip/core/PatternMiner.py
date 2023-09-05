@@ -14,7 +14,7 @@ from .FilteredCollection import FilteredCollection
 
 class PatternMinerWithoutFiltering:
 
-    def __init__(self, treeCount=None, featureCount=None, minePatternsWhileBuildingTree=None):
+    def __init__(self, treeCount=None, featureCount=None, minePatternsWhileBuildingTree=None, progress = False):
         self.__dataset = None
         self.__Patterns = list()
         self.__PatternsList = list()
@@ -26,6 +26,7 @@ class PatternMinerWithoutFiltering:
         self.__emergingPatternComparer = None
         self.__emergingPatternSimplifier = None
         self.__minimal = None
+        self.__progress = progress
 
         if not featureCount:
             self.__FeatureCount = -1
@@ -106,7 +107,12 @@ class PatternMinerWithoutFiltering:
         decision_tree_builder = self.decisionTreeBuilder
         decision_tree_builder.FeatureCount = featureCount
         decision_tree_builder.OnSelectingFeaturesToConsider = SampleWithoutRepetition
-        for i in tqdm(range(self.TreeCount), unit="tree", desc="Building trees and extracting patterns", leave=False):
+        if self.__progress:
+            tree_range = tqdm(range(self.TreeCount), unit="tree", desc="Building trees and extracting patterns", leave=False)
+        else:
+            tree_range = range(self.TreeCount)
+
+        for i in tree_range:
             decision_tree_builder.OnSelectingFeaturesToConsider = SampleWithoutRepetition
             tree = decision_tree_builder.Build()
             treeClassifier = DecisionTreeClassifier(tree)

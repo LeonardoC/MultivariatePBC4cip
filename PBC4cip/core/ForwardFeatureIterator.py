@@ -23,7 +23,7 @@ class ForwardFeatureIterator(object):
 
     @property
     def SelectedFeatures(self):
-        return self.__Dataset
+        return self.__SelectedFeatures
     @SelectedFeatures.setter
     def SelectedFeatures(self, new_selected_features):
         self.__SelectedFeatures = new_selected_features

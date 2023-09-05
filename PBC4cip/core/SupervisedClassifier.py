@@ -1,5 +1,5 @@
 from .DecisionTree import DecisionTree, DecisionTreeNode
-from .Helpers import MultiplyBy, AddTo
+from .Helpers import MultiplyBy, AddTo, ArgMax
 
 
 class DecisionTreeClassifier(object):
@@ -60,3 +60,8 @@ class DecisionTreeClassifier(object):
         classification = self.ClassifyInstance(
             self.DecisionTree.TreeRootNode, instance, 1)
         return MultiplyBy(classification, (1/sum(classification)))
+    
+    def predict(self, X):
+        scored_samples = [self.Classify(instance) for instance in X]
+        predicted = [ArgMax(instance) for instance in scored_samples]
+        return predicted

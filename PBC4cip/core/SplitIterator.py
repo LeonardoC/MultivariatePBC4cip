@@ -1,8 +1,8 @@
 def warn(*args, **kwargs):
     pass
 import warnings
-warnings.warn = warn
-
+#warnings.warn = warn
+warnings.filterwarnings("ignore")
 import math
 from .Helpers import FindDistribution, Substract
 import operator
@@ -94,7 +94,7 @@ class SplitIterator(object):
 
     def GetSplit(self, index):
         iter = 0
-        while iter <= index and FindNext():
+        while iter <= index and self.FindNext():
             iter += 1
 
 
@@ -383,10 +383,10 @@ class MultivariateOrderedFeatureSplitIterator(MultivariateSplitIterator):
         ldaTargets = [self.Dataset.GetIndexOfValue(
             self.Class[0], instance[0][classIdx]) for instance in instances]
 
-        lda = LDA(n_components=1)
+        lda = LDA(solver='eigen', n_components=1)
         try:
-            ldaOutput = lda.fit(ldaData, ldaTargets).transform(ldaData)
-
+            lda = lda.fit(ldaData, ldaTargets) #.transform(ldaData)
+            ldaOutput = np.sum(ldaData * lda.coef_, axis= 1)
             if len(ldaOutput) == 0:
                 return list()
 
@@ -400,15 +400,15 @@ class MultivariateOrderedFeatureSplitIterator(MultivariateSplitIterator):
             w_norm = math.sqrt(sum(map(lambda x: math.pow(x, 2), w)))
 
             for x in w:
-                if (w_norm == 0):
-                    print(f"x: {x} w_norm {w_norm}")
+                # if (w_norm == 0):
+                #     print(f"x: {x} w_norm {w_norm}")
                 
                 divNum = abs(x/w_norm)
                 if ( (not math.isnan(divNum)) and divNum < self.WMin):
                     print("x/w_norm is smaller than wMin")
                     return list()
 
-            return list(map(lambda r: r[0], ldaOutput))
+            return ldaOutput.tolist()
 
         except Exception as e:
             return list()

@@ -141,6 +141,20 @@ class MultivariateCutPointSelector(MultipleFeaturesSelector):
         self.__CutPoint = None
         self.__Weights = None
 
+    @property
+    def CutPoint(self):
+        return self.__CutPoint
+    @CutPoint.setter
+    def CutPoint(self, cutpoint):
+        self.__CutPoint = cutpoint
+
+    @property
+    def Weights(self):
+        return self.__Weights
+    @Weights.setter
+    def Weights(self, weights):
+        self.__Weights = weights
+
     def Select(self, instance):
         super().Select(instance)
         if any(self.Dataset.IsNominalFeature(feature) for feature in self.Features):

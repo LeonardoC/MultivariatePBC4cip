@@ -18,8 +18,8 @@ from tqdm import tqdm
 
 
 class PBC4cip:
-    def __init__(self, tree_count=100, filtering=False, multivariate = False, 
-    distribution_evaluator='quinlan gain', file_dataset = None):
+    def __init__(self, tree_count=200, filtering=False, multivariate = False, 
+    distribution_evaluator='quinlan gain', file_dataset = None, progress = False):
         self.File = None
         self.__miner = None
         if filtering:
@@ -39,6 +39,7 @@ class PBC4cip:
         self.__distribution_evaluator = get_distribution_evaluator(distribution_evaluator)
         self.__votesSum = None
         self.__classDistribution = None
+        self.__progress = progress
 
     @property
     def dataset(self):
@@ -144,7 +145,11 @@ class PBC4cip:
             X = X.to_numpy()
 
         classification_results = list()
-        for instance in tqdm(X, desc=f"Classifying instances", unit="instance", leave=False):
+        
+        if self.__progress:
+            X = tqdm(X, desc=f"Classifying instances", unit="instance", leave=False)
+
+        for instance in X:
             result = self.__predict_inst(instance)
             classification_results.append(result)
 
